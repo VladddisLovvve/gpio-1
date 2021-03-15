@@ -6,12 +6,13 @@ def main():
     GPIO.setmode(GPIO.BCM)
     global led_dict
     led_dict = {7: 21, 6: 20, 5: 16, 4: 12, 3: 7, 2: 8, 1: 25, 0: 24}
-    lightUP(2, 2)
-    blink(5, 3, 0.4)
+    # lightUP(2, 2)
+    # blink(5, 3, 0.4)
     runningLight(1, 0.3)
-    runningDark(1, 0.3)
-    print(decToBinList(-1))
-    lightNumber(3)
+    # runningDark(1, 0.3)
+    # print(decToBinList(-1))
+    # lightNumber(3)
+    runningPattern(254, "right")
     GPIO.cleanup()
 
 
@@ -51,7 +52,26 @@ def lightNumber(number):
     GPIO.setup(d, GPIO.OUT)
     GPIO.output(d, 1)
     time.sleep(2)
+    GPIO.output(d, 0)
 
+
+def runningPattern(pattern, direction):
+    GPIO.setup(list(led_dict.values()), GPIO.OUT)
+    lightNumber(pattern)
+    pattern = decToBinList(pattern)
+    for _ in range(24):
+        if direction == "left":
+            pattern = pattern[1:] + [pattern[0]]
+        else:
+            pattern = [pattern[-1]] + pattern[:-1]
+        d = list(led_dict.values())
+        d = [d[x] for x in range(len(d)) if pattern[x] != 0]
+        GPIO.setup(d, GPIO.OUT)
+        GPIO.output(d, 1)
+        time.sleep(1)
+        GPIO.output(d, 0)
+
+    
 
 if __name__ == "__main__":
     main()
