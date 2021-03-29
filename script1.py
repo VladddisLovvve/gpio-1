@@ -27,7 +27,7 @@ def main():
         main()
     
 
-def num2dac(value, slee_time = 2):
+def num2dac(value, slee_time = 20):
     dac = [leds[x] for x in range(8) if decToBinList(value)[x] == 1]
     GPIO.setup(dac, GPIO.OUT)
     GPIO.output(dac, 1)

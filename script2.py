@@ -6,7 +6,7 @@ from script1 import num2dac
 
 GPIO.setmode(GPIO.BCM)
 
-leds = [10, 9, 11, 5, 6, 13, 19, 26]
+leds = [10, 9, 11, 5, 6, 13, 19, 26][::-1]
 
 
 def main():
