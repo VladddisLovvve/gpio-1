@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 from test import decToBinList
+from script1 import num2dac
 
 
 GPIO.setmode(GPIO.BCM)
@@ -10,7 +11,7 @@ leds = [10, 9, 11, 5, 6, 13, 19, 26]
 
 def main():
     while True:
-        print("Введите значение от 0 до 255(-1 для выхода): ")
+        print("Введите число повторений: ")
         try:
             value = int(input())
         except ValueError:
@@ -19,21 +20,23 @@ def main():
         if value == -1:
             GPIO.cleanup()
             exit()
-        elif 0 <= value <= 255:
+        elif value >= 1:
             break
-    num2dac(value)
+    repeat(value)
     print("Для продолжения нажмите Enter, для выхода -1: ")
     while input() != '-1':
         main()
-    
 
-def num2dac(value, slee_time = 2):
-    dac = [leds[x] for x in range(8) if decToBinList(value)[x] == 1]
-    GPIO.setup(dac, GPIO.OUT)
-    GPIO.output(dac, 1)
-    time.sleep(slee_time)
-    GPIO.output(dac, 0)
+
+def repeat(repetitionsNumber):
+    for y in range(repetitionsNumber):
+        for x in range(256):
+            num2dac(x, slee_time=0.01)
+        for x in range(255, 0, -1):
+            num2dac(x, slee_time=0.01)
+
 
 
 if __name__ == "__main__":
     main()
+
