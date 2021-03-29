@@ -4,6 +4,7 @@ from test import decToBinList
 
 
 GPIO.setmode(GPIO.BCM)
+
 leds = [10, 9, 11, 5, 6, 13, 19, 26]
 
 
